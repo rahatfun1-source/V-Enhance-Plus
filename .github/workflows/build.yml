@@ -34,11 +34,13 @@ jobs:
           PROJECT_DIR=$(find . -name settings.gradle.kts -printf '%h\n' | head -n 1)
           echo "PROJECT_DIR=$PROJECT_DIR" >> "$GITHUB_ENV"
 
+      
       - name: Build Debug APK
         run: |
           cd "extracted/$PROJECT_DIR"
+          sed -i '/^package /a import androidx.compose.foundation.verticalScroll' app/src/main/java/com/venhanceplus/app/MainActivity.kt
           gradle assembleDebug
-
+          
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
